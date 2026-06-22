@@ -1,0 +1,48 @@
+cmd 창에서 진행합니다.
+
+cd c:\python310\scripts
+pip install beautifulsoup4
+pip install folium
+pip install selenium
+pip install wordcloud
+pip install faker
+
+pip list
+
+크롬 json viewer
+
+D 드라이브
+D:\MyPython
+	ch11_training
+	ch12_testing
+
+
+에 myjupyter.bat라는 동일한 이름으로 파일을 생성합니다.
+
+
+<h1><font color="blue">데이터 로딩과 저장</font></h1>
+<h2><font color="red">누락된 데이터 제거</font></h2>
+<h4><font color="green">색인 재설정과 이름 변경하기</font></h4>
+<h6><font color="BlueViolet">iloc 속성 사용</font></h6>
+
+# 판다스에서는 결측치 데이터를 NaN이라고 합니다.
+
+Chap02.DataFrame.ipynb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ㅇㅇㅇ

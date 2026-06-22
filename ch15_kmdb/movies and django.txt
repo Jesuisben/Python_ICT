@@ -1,0 +1,227 @@
+Django 프로젝트를 생성하고 설정하는 방법을 단계별로 설명하겠습니다.
+
+---
+
+### **1. Django 프로젝트 및 앱 생성**
+터미널에서 아래 명령어를 실행하여 Django 프로젝트를 생성합니다.
+
+# 가상 환경 만들기
+d:
+mkdir virdir
+cd virdir
+python -m venv virenv
+cd d:\virdir\virenv\Scripts
+activate
+
+# 여기서 장고 설치
+pip install django==3.1.3
+
+# pip 업그레이드
+python.exe -m pip install --upgrade pip
+
+
+# 프로젝트 폴더 만들기
+d:
+mkdir \DjangoProject
+cd \DjangoProject
+mkdir moviesite
+cd moviesite
+
+# 가상 환경으로 진입하기
+d:\virdir\virenv\Scripts\activate
+
+(virenv) D:\DjangoProject\moviesite>django-admin startproject config .
+
+# movies 앱 만들기
+python manage.py startapp movies
+
+# 파이참 실행하기
+# Python Interpreter을 가상 환경으로 설정하기
+
+
+### **2. SQLite 데이터베이스 설정 (settings.py)**
+`mymovies/settings.py`에서 데이터베이스 설정이 기본적으로 SQLite로 되어 있으므로, 그대로 사용합니다.
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'movies.db',  # 기존 SQLite 파일 사용
+    }
+}
+
+
+**`INSTALLED_APPS`** 에 `movies` 앱을 추가해야 합니다.
+
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'movies',  # 추가
+]
+
+
+### **3. 모델 정의 (movies/models.py)**
+SQLite 테이블에 맞게 모델을 생성합니다.
+
+
+from django.db import models
+
+class Movie(models.Model):
+    movieCd = models.CharField(max_length=10, primary_key=True)
+    movieNm = models.CharField(max_length=255)
+    movieNmEn = models.CharField(max_length=255, blank=True, null=True)
+    prdtYear = models.IntegerField()
+    openDt = models.CharField(max_length=10, blank=True, null=True)
+    typeNm = models.CharField(max_length=50)
+    prdtStatNm = models.CharField(max_length=50)
+    nationAlt = models.CharField(max_length=255)
+    genreAlt = models.CharField(max_length=255)
+    repNationNm = models.CharField(max_length=50)
+    repGenreNm = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.movieNm
+# end class
+
+### **4. 마이그레이션 적용**
+모델을 데이터베이스에 반영하려면 아래 명령어를 실행합니다.
+
+python manage.py makemigrations movies
+python manage.py migrate
+
+
+---
+
+### **5. 관리자 페이지 등록 (movies/admin.py)**
+관리자 페이지에서 영화 데이터를 확인할 수 있도록 모델을 등록합니다.
+
+
+from django.contrib import admin
+from .models import Movie
+
+@admin.register(Movie)
+class MovieAdmin(admin.ModelAdmin):
+    list_display = ('movieCd', 'movieNm', 'prdtYear', 'openDt', 'repGenreNm')
+    search_fields = ('movieNm', 'movieNmEn', 'genreAlt')
+
+
+이제 관리자 페이지에서 데이터를 관리할 수 있습니다.
+
+
+python manage.py createsuperuser  # 관리자 계정 생성
+python manage.py runserver
+```
+
+`http://127.0.0.1:8000/admin/` 에 접속 후 로그인하면 데이터를 확인할 수 있습니다.
+
+---
+
+### **6. CSV 데이터 가져오기 (movies/management/commands/load_movies.py)**
+Django 명령어를 만들어 CSV 데이터를 데이터베이스에 삽입합니다.
+
+```bash
+mkdir -p movies/management/commands
+touch movies/management/commands/__init__.py
+touch movies/management/commands/load_movies.py
+```
+
+`movies/management/commands/load_movies.py` 파일을 다음과 같이 작성합니다.
+
+```python
+import csv
+from django.core.management.base import BaseCommand
+from movies.models import Movie
+
+class Command(BaseCommand):
+    help = "Load movies from kmdb_get_movie_list.csv into the database"
+
+    def handle(self, *args, **kwargs):
+        csv_file = "kmdb_get_movie_list.csv"
+
+        with open(csv_file, newline="", encoding="utf-8") as file:
+            reader = csv.reader(file)
+            next(reader)  # 헤더 건너뛰기
+
+            for row in reader:
+                Movie.objects.update_or_create(
+                    movieCd=row[0],
+                    defaults={
+                        "movieNm": row[1],
+                        "movieNmEn": row[2],
+                        "prdtYear": int(row[3]),
+                        "openDt": row[4] if row[4] else None,
+                        "typeNm": row[5],
+                        "prdtStatNm": row[6],
+                        "nationAlt": row[7],
+                        "genreAlt": row[8],
+                        "repNationNm": row[9],
+                        "repGenreNm": row[10],
+                    }
+                )
+
+        self.stdout.write(self.style.SUCCESS("CSV 데이터 로드 완료!"))
+```
+
+이제 다음 명령어를 실행하면 CSV 데이터를 데이터베이스에 삽입할 수 있습니다.
+
+```bash
+python manage.py load_movies
+```
+
+---
+
+### **7. 영화 리스트 API 생성 (movies/views.py)**
+Django의 `JsonResponse`를 사용하여 REST API를 간단히 구현합니다.
+
+```python
+from django.http import JsonResponse
+from .models import Movie
+
+def movie_list(request):
+    movies = Movie.objects.all().values()
+    return JsonResponse(list(movies), safe=False)
+```
+
+---
+
+### **8. URL 설정 (movies/urls.py)**
+API 엔드포인트를 설정합니다.
+
+```python
+from django.urls import path
+from .views import movie_list
+
+urlpatterns = [
+    path("movies/", movie_list, name="movie_list"),
+]
+```
+
+`mymovies/urls.py`에 `movies.urls`를 포함시킵니다.
+
+```python
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('movies.urls')),
+]
+```
+
+---
+
+### **9. 서버 실행 및 API 테스트**
+```bash
+python manage.py runserver
+```
+
+이제 브라우저에서 `http://127.0.0.1:8000/api/movies/` 로 접속하면 JSON 형식으로 영화 데이터를 조회할 수 있습니다.
+
+---
+
+이제 Django 프로젝트에서 SQLite 데이터베이스를 활용하여 CSV 데이터를 관리하고, API로 제공할 수 있습니다! 🚀  
+추가적으로 원하는 기능이 있다면 말씀해주세요!
