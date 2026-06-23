@@ -15,29 +15,6 @@ print(mydict)
 result = sorted(mydict, key=mydict.get, reverse=True)
 print(result)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # human = ['김철수', '홍길동', '박영희']
 # jumsu = [50, 60, 70]
 #

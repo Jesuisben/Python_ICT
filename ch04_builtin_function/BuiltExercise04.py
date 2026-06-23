@@ -1,37 +1,6 @@
 mylist = [10, 20, 30, 40]
 print((max(mylist), min(mylist), (sum(mylist) / len(mylist))))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # mylist = [10, 20, 30, 40]
 #
 # maxval = max(mylist)
