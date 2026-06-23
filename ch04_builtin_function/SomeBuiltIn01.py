@@ -20,6 +20,7 @@ print('max(myset) : %d' % max(myset))
 # 특정 문자열 내의 글자들을 중복되지 않게 집합으로 만들어 봅니다.
 # list 컴프리헨션 기능을 이용하여 list 형식으로 변경한 뒤 정렬합니다.
 mystring = 'hello'
+# myset은 {"h", "e", "l", "l", "o"}로 되어 있음
 myset = set(mystring)
 print(myset)
 
