@@ -9,8 +9,8 @@ print('math.trunc(123.456789) :', math.trunc(123.456789))
 print('math.floor(123.456789) :', math.floor(123.456789))
 print('math.ceil(123.456789) :', math.ceil(123.456789))
 print('math.sqrt(16) :', math.sqrt(16))
-print('math.log(4, 2) :', math.log(32, 2))
-print('math.log10(100) :', math.log10(1000))
+print('math.log(32, 2) :', math.log(32, 2))
+print('math.log10(1000) :', math.log10(1000))
 
 # 삼각 함수
 # 원주율 3.14를 각도로 표현하면 180도입니다.
