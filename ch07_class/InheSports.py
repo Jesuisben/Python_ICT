@@ -1,3 +1,4 @@
+# 상속
 class Sports:
     def __init__(self, name, entry ):
         self.name = name

@@ -1,3 +1,6 @@
+# Sales 클래스는 Fruit 클래스를 포함
+# Sales가 Fruit을 가지고 있는 구조 (Has A)
+# -> Sales Has A Fruit
 class Fruit:
     def __init__(self, item, qty, price):
         self.item = item
@@ -20,6 +23,7 @@ class Sales:
             item = input('품목 입력 : ')
             qty = int(input('수량 입력 : '))
             price = int(input('단가 입력 : '))
+            # 맴버 변수로 Fruit 클래스의 객체를 가짐
             self.fruit = Fruit(item, qty, price)
             self.fruit.showInfo(idx+1)
             totalsum += qty

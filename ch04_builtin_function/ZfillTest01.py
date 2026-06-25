@@ -11,6 +11,7 @@ result = mystring.rjust(max_length, fill_string)
 print(result)
 
 # 빈 자리만큼 숫자 0을 채워 주는 함수입니다.
+# 공부 한번하기
 result = mystring.zfill(max_length)
 print(result)
 
