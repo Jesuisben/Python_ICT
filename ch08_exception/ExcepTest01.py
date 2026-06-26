@@ -23,6 +23,6 @@ except Exception as err:
 
 else :
     print('예외 없으면 실행 되요.')
-    
+
 finally:
     print('나는 무조건 실행 되요.')

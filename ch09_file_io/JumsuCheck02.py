@@ -1,16 +1,21 @@
+dataIn, dataOut = "../dataIn/", "../dataOut/"
+
 # JumsuCheck02.py
 # jumsu.txt 파일을 읽어서, '이름/성별/총점/평균' 형식으로 result.txt 파일에 기록하는 프로그램을 작성해 보세요.
 myencoding = 'UTF-8'
 
-source = open(file='jumsu.txt', mode='rt', encoding=myencoding) # 읽어올 파일
+source = open(file= dataIn + 'jumsu.txt', mode='rt', encoding=myencoding) # 읽어올 파일
 
-destination = open(file='result.txt', mode='wt', encoding=myencoding) # 신규 생성할 파일
+destination = open(file= dataOut + 'result.txt', mode='wt', encoding=myencoding) # 신규 생성할 파일
 
-data = [item.strip() for item in source.readlines()]
-print(data)
-for bean in data:
+# readlines() 함수를 써도 결국 "한줄씩" 여러줄을 가져오는 것이여서 \n이 포함되어서 읽어옴
+# 그래서 .strip() 함수를 사용함
+students = [item.strip() for item in source.readlines()]
+print(students)
+
+for bean in students:
     human = bean.split(',')
-    print(human)
+    # print(human)
     name = human[0]
     kor = float(human[1])
     eng = float(human[2])

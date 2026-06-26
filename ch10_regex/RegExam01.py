@@ -20,6 +20,10 @@ print('결과01 : %s' % result01)
 print('\nfile + 영문자 최소 2개 이상 + .png')
 print('주의 : 점은 임의의 한문자(줄바꿈 제외), 역슬래시 점은 점 기호를 의미')
 mylist02 = ['filea.png', 'fileab.png', 'fileabc.png', 'file.png', 'file99.png', 'filexyzXpng']
+
+# ^ : 문자열 시작 / file : 문자 그대로 "file" / [a-zA-Z]{2,} : 알파벳 2개 이상
+# \. : 문자 그대로 "." (.은 원래 메타문자라 \로 이스케이프)
+# png : 문자 그대로 "png" / $ : 문자열 끝
 regEx = '^file[a-zA-Z]{2,}\.png$'
 pattern = re.compile(regEx)
 
@@ -54,12 +58,16 @@ print('결과03 : %s' % result03)
 
 print('\n숫자로 시작(0제외)하고, 이후에 알파벳이 1개 이상인 항목 찾기')
 mylist04 = ['1a', '2abc', '9xyz', '0ab']
+# + 기호는 사실상 {1,}과 같은 뜻임 (바로 앞에 있는 문자)
 regEx = '^[1-9][a-zA-Z]+$' # + 기호는 최소 1번 이상
 result04 = extract_by_regex(mylist04, regEx)
 print('결과04 : %s' % result04)
 
 print('\nhello 또는 hi로 시작하는 항목들 찾기')
 mylist05 = ['hello123', 'hi999', 'hey77', 'hello']
+# . 기호는 줄바꿈을 제외한 임의의 문자 1개
+# * 기호는 사실상 {0,}과 같은 뜻임 (바로 앞에 있는 문자)
+# | 기호는 or이라는 뜻
 regEx = '^(hello|hi).*$' # .* 은 임의의 문자 0번 이상 반복을 의미
 result05 = extract_by_regex(mylist05, regEx)
 print('결과05 : %s' % result05)
