@@ -1,9 +1,11 @@
 import re
 
+# findall()
 print('findall 함수는 정규식과 매치되는 모든 문자열을 list 형식으로 반환해 줍니다.')
 mystring01 = '삼일절은 1919년 3월 1일입니다.'
 regEx = '\d+'
 pattern = re.compile(regEx)
+# result = ['1919', '3', '1']
 result = pattern.findall(mystring01)
 print(result)
 message = '삼일절 : %s년 %s월 %s일' % (result[0], result[1].zfill(2), result[2].zfill(2))
@@ -15,6 +17,7 @@ regEx = '\d+'
 pattern = re.compile(regEx)
 quantity = pattern.findall(mystring02)
 
+# 문자열로 리스트에 들어가있으니까 int로 변환하기
 total = 0
 for qty in quantity:
     total += int(qty)
@@ -29,6 +32,7 @@ words = pattern.findall(mystring03)
 words.sort()
 print(words)
 
+# finditer() : iterable - ex) 집합 자료형, 문자열(인덱스로 나누면 가능) 등
 print('\nfinditer 함수는 결과물을 반복이 가능한 개체 형식으로 반환해 줍니다.')
 print('일반적으로 for 구문과 같이 사용합니다.')
 words = pattern.finditer(mystring03)

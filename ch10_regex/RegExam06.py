@@ -6,11 +6,16 @@ import re
 print('1. 역슬래시 2개 나온 다음 알파벳 문자열 찾기')
 mystring = '\\hello how \\world \\\\python'
 
+# 1. 코드 작성 : '\\\\[a-z]+' (역슬래시 4개)
+# 2. Python 문자열 변환 : \\[a-z]+ (역슬래시 2개)
+# 3. 정규식 엔진 변환 : \[a-z]+ (역슬래시 1개)
 regex1 = '\\\\[a-z]+' # 일반 문자열 : 역슬래시 4개이지만, 2개로 이해합니다.
 pattern1 = re.compile(regex1)
 result1 = pattern1.findall(mystring)
 print('일반 문자열 결과:', result1)  # ['\\hello', '\\world', '\\python']
 
+# r'문자열' : raw string - 백슬래시를 이스케이프 문자로 처리하지 않고 문자열로 처리하는 것
+# raw string은 f-string과 같이 사용가능 : rf"문자열" / fr"문자열"
 regex2 = r'\\[a-z]+' # raw string : 역슬래시 2개입니다.
 pattern2 = re.compile(regex2)
 result2 = pattern2.findall(mystring)
@@ -43,6 +48,10 @@ print('\n3. 경로(path)에서 파일명 추출')
 path = r"C:\Users\admin\Documents\file.txt"
 
 # \ 문자를 패턴으로 쓸 때 raw string 사용
+# raw string : Python 문자열 변환 단계 없이 정규식 엔진에 그대로 전달됨
+# 1. 코드 작성      : r'\\([^\\]+)$'
+# 2. 정규식 엔진 수신 : \\([^\\]+)$  (raw이므로 변환 없음)
+# 3. 정규식 엔진 해석 : \(역슬래시 아닌 문자 1개 이상)끝
 regex_path = r'\\([^\\]+)$'  # 마지막 \ 뒤의 파일명 추출
 match = re.search(regex_path, path)
 if match:
